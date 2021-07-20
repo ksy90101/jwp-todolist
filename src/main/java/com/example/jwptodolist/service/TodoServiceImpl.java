@@ -1,15 +1,18 @@
 package com.example.jwptodolist.service;
 
+import com.example.jwptodolist.doamin.Status;
 import com.example.jwptodolist.doamin.Todo;
 import com.example.jwptodolist.doamin.TodoRepository;
 import com.example.jwptodolist.dto.TodoCreateRequest;
 import com.example.jwptodolist.dto.TodoResponse;
 import com.example.jwptodolist.dto.TodoUpdateRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
@@ -27,6 +30,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TodoResponse findTodo(final Long id) {
         final Todo todo = todoRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
@@ -35,6 +39,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TodoResponse> findTodos() {
         final List<Todo> todos = todoRepository.findAll();
 
@@ -49,5 +54,15 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public void delete(final List<Long> ids) {
         todoRepository.deleteAllByIdInBatch(ids);
+    }
+
+    @Override
+    public TodoResponse changeStatus(final Long id, final Status status) {
+        final Todo todo = todoRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+
+        todo.changeStatus(status);
+
+        return TodoResponse.of(todo);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jwptodolist.controller;
 
+import com.example.jwptodolist.doamin.Status;
 import com.example.jwptodolist.dto.TodoCreateRequest;
 import com.example.jwptodolist.dto.TodoResponse;
 import com.example.jwptodolist.dto.TodoUpdateRequest;
@@ -57,5 +58,12 @@ public class TodoController {
 
         return ResponseEntity.noContent()
                 .build();
+    }
+
+    @PatchMapping("/{id}/{status}")
+    public ResponseEntity<TodoResponse> changeStatus(@PathVariable final Long id, @PathVariable final Status status) {
+        final TodoResponse todoResponse = todoService.changeStatus(id, status);
+
+        return ResponseEntity.ok(todoResponse);
     }
 }

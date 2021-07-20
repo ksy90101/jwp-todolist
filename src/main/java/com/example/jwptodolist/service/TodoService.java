@@ -1,5 +1,6 @@
 package com.example.jwptodolist.service;
 
+import com.example.jwptodolist.doamin.Status;
 import com.example.jwptodolist.dto.TodoCreateRequest;
 import com.example.jwptodolist.dto.TodoResponse;
 import com.example.jwptodolist.dto.TodoUpdateRequest;
@@ -16,4 +17,6 @@ public interface TodoService {
     TodoResponse update(Long id, TodoUpdateRequest todoUpdateRequest);
 
     void delete(List<Long> id);
+
+    TodoResponse changeStatus(Long id, Status status);
 }

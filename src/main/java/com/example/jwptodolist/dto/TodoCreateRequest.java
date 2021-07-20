@@ -9,6 +9,6 @@ public class TodoCreateRequest {
     private String description;
 
     public Todo toEntity() {
-        return new Todo(null, title, description, Status.PREPARING);
+        return new Todo(null, title, description, Status.ACTIVE);
     }
 }

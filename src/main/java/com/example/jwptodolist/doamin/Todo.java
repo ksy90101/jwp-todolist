@@ -42,4 +42,8 @@ public class Todo {
     public Status getStatus() {
         return status;
     }
+
+    public void changeStatus(final Status status) {
+        this.status = status;
+    }
 }
