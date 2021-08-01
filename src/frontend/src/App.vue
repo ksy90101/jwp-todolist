@@ -13,18 +13,24 @@
   <ul>
     <li v-for="todo in todos"
         :key="todo.id">
+      <form v-if="todo.isEdit" style="flex-basis: 85%" @submit.prevent="handler.updateTodo(todo.id)">
+        <input v-model="todo.content" style="height: inherit">
+      </form>
+      <div v-else style="flex-basis: 85%">
       <span :class="{ done: todo.isComplete() }"
             @click="handler.changeStatus(todo.id, todo.isComplete() ? 'ACTIVE' : 'COMPLETE')">
         {{ todo.content }}
       </span>
-      <button @click="handler.deleteTodo(todo.id)">Remove</button>
+      </div>
+      <button @click="todo.isEdit = true">수정</button>
+      <button @click="handler.deleteTodo(todo.id)">삭제</button>
     </li>
   </ul>
   <h4 v-if="todos.length === 0">Empty list.</h4>
 </template>
 
 <script>
-import {changeStatus, createTodo, deleteTodo, fetchTodos} from "@/api/todo";
+import {changeStatus, createTodo, deleteTodo, fetchTodos, updateTodo} from "@/api/todo";
 import {onMounted, reactive, toRefs} from 'vue'
 
 export default {
@@ -49,6 +55,18 @@ export default {
         const todos = await fetchTodos();
 
         state.todos = (todos);
+      },
+      updateTodo: async (id) => {
+        const index = state.todos.findIndex(todo => todo.id === id)
+        const todo = state.todos[index]
+
+        const params = {
+          content: todo.content
+        }
+
+        await updateTodo(id, params);
+
+        todo.isEdit = false;
       },
       deleteTodo: async (id) => {
         await deleteTodo(id);

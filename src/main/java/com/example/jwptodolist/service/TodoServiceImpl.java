@@ -48,7 +48,11 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoResponse update(final Long id, final TodoUpdateRequest todoUpdateRequest) {
-        return null;
+        final Todo todo = todoRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+        todo.changeContent(todoUpdateRequest.getContent());
+
+        return TodoResponse.of(todo);
     }
 
     @Override

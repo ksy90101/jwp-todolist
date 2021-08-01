@@ -3,12 +3,14 @@ export class Todo {
     content;
     status;
     date;
+    isEdit
 
     constructor({id, content, status, date}) {
         this.id = id;
         this.content = content;
         this.status = status;
         this.date = date;
+        this.isEdit = false;
     }
 
     isComplete() {

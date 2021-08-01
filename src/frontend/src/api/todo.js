@@ -19,8 +19,8 @@ export const fetchTodos = async () => {
     return data.map(response => new Todo(response))
 }
 
-export const updateTodo = async (param) => {
-    const {data} = await http.put('/todos', param)
+export const updateTodo = async (id, param) => {
+    const {data} = await http.put(`/todos/${id}`, param)
 
     return new Todo(data);
 }
