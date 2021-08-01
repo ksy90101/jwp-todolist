@@ -1,10 +1,12 @@
 package com.example.jwptodolist.doamin;
 
+import com.example.jwptodolist.common.BaseTimeEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "todos")
-public class Todo {
+public class Todo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,18 +14,15 @@ public class Todo {
 
     private String title;
 
-    private String description;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
     protected Todo() {
     }
 
-    public Todo(final Long id, final String title, final String description, final Status status) {
+    public Todo(final Long id, final String title, final Status status) {
         this.id = id;
         this.title = title;
-        this.description = description;
         this.status = status;
     }
 
@@ -33,10 +32,6 @@ public class Todo {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Status getStatus() {

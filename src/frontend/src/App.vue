@@ -27,23 +27,24 @@
 
 <script>
 import {ref} from 'vue';
+import {createTodo} from "@/api/todo";
 
 export default {
   name: 'App',
   setup() {
     const newTodo = ref('');
-    const todosData = JSON.parse(localStorage.getItem('todos'));
+    const todosData = [];
     const todos = ref(todosData);
 
-    function addTodo() {
+    const addTodo = async () => {
       if (newTodo.value) {
         todos.value.push({
-          done: false,
           content: newTodo.value
         });
         newTodo.value = '';
       }
-      saveData();
+      const {todo} = await createTodo(todosData.value);
+      todos.value.push(todo)
     }
 
     function doneTodo(todo) {
@@ -56,18 +57,12 @@ export default {
       saveData();
     }
 
-    function saveData() {
-      const storageData = JSON.stringify(todos.value);
-      localStorage.setItem('todos', storageData);
-    }
-
     return {
       todos,
       newTodo,
       addTodo,
       doneTodo,
       removeTodo,
-      saveData
     }
   }
 }

@@ -11,19 +11,16 @@ public class TodoResponse {
 
     private final String title;
 
-    private final String description;
-
     private final Status status;
 
-    public TodoResponse(final Long id, final String title, final String description, final Status status) {
+    public TodoResponse(final Long id, final String title, final Status status) {
         this.id = id;
         this.title = title;
-        this.description = description;
         this.status = status;
     }
 
     public static TodoResponse of(final Todo todo) {
-        return new TodoResponse(todo.getId(), todo.getTitle(), todo.getDescription(), todo.getStatus());
+        return new TodoResponse(todo.getId(), todo.getTitle(), todo.getStatus());
     }
 
     public static List<TodoResponse> ofList(final List<Todo> todos) {
@@ -38,10 +35,6 @@ public class TodoResponse {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Status getStatus() {
