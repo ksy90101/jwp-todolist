@@ -52,8 +52,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void delete(final List<Long> ids) {
-        todoRepository.deleteAllByIdInBatch(ids);
+    public void delete(final Long id) {
+        todoRepository.deleteById(id);
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface TodoService {
 
     TodoResponse update(Long id, TodoUpdateRequest todoUpdateRequest);
 
-    void delete(List<Long> id);
+    void delete(Long id);
 
     TodoResponse changeStatus(Long id, Status status);
 }

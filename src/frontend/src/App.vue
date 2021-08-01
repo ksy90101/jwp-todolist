@@ -1,9 +1,9 @@
 <template>
   <h1>ToDo App</h1>
-  <form @submit.prevent="addTodo()">
+  <form @submit.prevent="handler.addTodo">
     <label>New ToDo </label>
     <input
-        v-model="newTodo"
+        v-model="content"
         autocomplete="off"
         name="newTodo"
     >
@@ -11,58 +11,64 @@
   </form>
   <h2>ToDo List</h2>
   <ul>
-    <li
-        v-for="(todo, index) in todos"
-        :key="index"
-    >
-			<span
-          :class="{ done: todo.done }"
-          @click="doneTodo(todo)"
-      >{{ todo.content }}</span>
-      <button @click="removeTodo(index)">Remove</button>
+    <li v-for="todo in todos"
+        :key="todo.id">
+      <span :class="{ done: todo.isComplete() }"
+            @click="handler.changeStatus(todo.id, todo.isComplete() ? 'ACTIVE' : 'COMPLETE')">
+        {{ todo.content }}
+      </span>
+      <button @click="handler.deleteTodo(todo.id)">Remove</button>
     </li>
   </ul>
   <h4 v-if="todos.length === 0">Empty list.</h4>
 </template>
 
 <script>
-import {ref} from 'vue';
-import {createTodo} from "@/api/todo";
+import {changeStatus, createTodo, deleteTodo, fetchTodos} from "@/api/todo";
+import {onMounted, reactive, toRefs} from 'vue'
 
 export default {
   name: 'App',
   setup() {
-    const newTodo = ref('');
-    const todosData = [];
-    const todos = ref(todosData);
+    const state = reactive({
+      content: '',
+      todos: [],
+    })
 
-    const addTodo = async () => {
-      if (newTodo.value) {
-        todos.value.push({
-          content: newTodo.value
-        });
-        newTodo.value = '';
+    const handler = {
+      addTodo: async () => {
+        const params = {content: state.content, status: 'active'}
+
+        const todo = await createTodo(params)
+
+        state.todos.push(todo)
+
+        state.content = ''
+      },
+      fetchTodos: async () => {
+        const todos = await fetchTodos();
+
+        state.todos = (todos);
+      },
+      deleteTodo: async (id) => {
+        await deleteTodo(id);
+        const index = state.todos.findIndex(todo => todo.id === id)
+        state.todos.splice(index, 1)
+      },
+      changeStatus: async (id, status) => {
+        await changeStatus(id, status);
+        const index = state.todos.findIndex(todo => todo.id === id)
+        state.todos[index].status = status;
       }
-      const {todo} = await createTodo(todosData.value);
-      todos.value.push(todo)
     }
 
-    function doneTodo(todo) {
-      todo.done = !todo.done
-      saveData();
-    }
-
-    function removeTodo(index) {
-      todos.value.splice(index, 1);
-      saveData();
-    }
+    onMounted(async () => {
+      await handler.fetchTodos();
+    })
 
     return {
-      todos,
-      newTodo,
-      addTodo,
-      doneTodo,
-      removeTodo,
+      ...toRefs(state),
+      handler,
     }
   }
 }

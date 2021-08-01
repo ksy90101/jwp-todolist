@@ -22,7 +22,7 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<TodoResponse> create(@RequestBody final TodoCreateRequest todoCreateRequest) throws URISyntaxException {
         final TodoResponse todoResponse = todoService.create(todoCreateRequest);
 
@@ -38,7 +38,7 @@ public class TodoController {
         return ResponseEntity.ok(todo);
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<TodoResponse>> findTodos() {
         final List<TodoResponse> todos = todoService.findTodos();
 
@@ -52,9 +52,9 @@ public class TodoController {
         return ResponseEntity.ok(todo);
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<Void> delete(final List<Long> ids) {
-        todoService.delete(ids);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable final Long id) {
+        todoService.delete(id);
 
         return ResponseEntity.noContent()
                 .build();

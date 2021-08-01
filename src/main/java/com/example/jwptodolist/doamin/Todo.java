@@ -12,7 +12,7 @@ public class Todo extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String content;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -20,9 +20,9 @@ public class Todo extends BaseTimeEntity {
     protected Todo() {
     }
 
-    public Todo(final Long id, final String title, final Status status) {
+    public Todo(final Long id, final String content, final Status status) {
         this.id = id;
-        this.title = title;
+        this.content = content;
         this.status = status;
     }
 
@@ -30,8 +30,8 @@ public class Todo extends BaseTimeEntity {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getContent() {
+        return content;
     }
 
     public Status getStatus() {

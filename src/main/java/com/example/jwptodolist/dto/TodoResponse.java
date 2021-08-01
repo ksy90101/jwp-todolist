@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
 public class TodoResponse {
     private final Long id;
 
-    private final String title;
+    private final String content;
 
     private final Status status;
 
-    public TodoResponse(final Long id, final String title, final Status status) {
+    public TodoResponse(final Long id, final String content, final Status status) {
         this.id = id;
-        this.title = title;
+        this.content = content;
         this.status = status;
     }
 
     public static TodoResponse of(final Todo todo) {
-        return new TodoResponse(todo.getId(), todo.getTitle(), todo.getStatus());
+        return new TodoResponse(todo.getId(), todo.getContent(), todo.getStatus());
     }
 
     public static List<TodoResponse> ofList(final List<Todo> todos) {
@@ -33,8 +33,8 @@ public class TodoResponse {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getContent() {
+        return content;
     }
 
     public Status getStatus() {
