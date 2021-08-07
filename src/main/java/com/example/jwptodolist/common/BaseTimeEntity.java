@@ -12,16 +12,16 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updateDate;
+    private LocalDateTime updatedAt;
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

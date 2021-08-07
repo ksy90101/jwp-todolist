@@ -2,14 +2,14 @@ export class Todo {
     id;
     content;
     status;
-    date;
+    updatedAt;
     isEdit
 
-    constructor({id, content, status, date}) {
+    constructor({id, content, status, updatedAt}) {
         this.id = id;
         this.content = content;
         this.status = status;
-        this.date = date;
+        this.updatedAt = updatedAt;
         this.isEdit = false;
     }
 

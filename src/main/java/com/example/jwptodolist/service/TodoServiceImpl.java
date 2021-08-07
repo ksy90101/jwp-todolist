@@ -40,8 +40,13 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TodoResponse> findTodos() {
-        final List<Todo> todos = todoRepository.findAll();
+    public List<TodoResponse> findTodos(final String status) {
+        if (status.isEmpty()) {
+            final List<Todo> todos = todoRepository.findAll();
+            return TodoResponse.ofList(todos);
+        }
+
+        final List<Todo> todos = todoRepository.findAllByStatus(Status.valueOf(status));
 
         return TodoResponse.ofList(todos);
     }

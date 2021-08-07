@@ -39,8 +39,8 @@ public class TodoController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<TodoResponse>> findTodos() {
-        final List<TodoResponse> todos = todoService.findTodos();
+    public ResponseEntity<List<TodoResponse>> findTodos(@RequestParam final String status) {
+        final List<TodoResponse> todos = todoService.findTodos(status);
 
         return ResponseEntity.ok(todos);
     }

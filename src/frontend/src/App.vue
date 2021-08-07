@@ -16,22 +16,38 @@
       <form v-if="todo.isEdit" style="flex-basis: 85%" @submit.prevent="handler.updateTodo(todo.id)">
         <input v-model="todo.content" style="height: inherit">
       </form>
-      <div v-else style="flex-basis: 85%">
-      <span :class="{ done: todo.isComplete() }"
-            @click="handler.changeStatus(todo.id, todo.isComplete() ? 'ACTIVE' : 'COMPLETE')">
-        {{ todo.content }}
-      </span>
+      <div v-else
+           style="flex-basis: 85%"
+           @click="handler.changeStatus(todo.id, todo.isComplete() ? 'ACTIVE' : 'COMPLETE')">
+        <p :class="{ done: todo.isComplete() }">
+          {{ todo.content }}
+        </p>
+        <p :class="{ done: todo.isComplete() }">
+          {{ dayjs(todo.updatedAt).format('YYYY-MM-DD') }}
+        </p>
       </div>
       <button @click="todo.isEdit = true">수정</button>
       <button @click="handler.deleteTodo(todo.id)">삭제</button>
     </li>
+    <h3 v-if="todos.length === 0">Empty list.</h3>
   </ul>
-  <h4 v-if="todos.length === 0">Empty list.</h4>
+  <div class="status">
+    <span @click="handler.fetchTodos()">
+      전체
+    </span>
+    <span @click="handler.fetchTodos('ACTIVE')">
+      진행중
+    </span>
+    <span @click="handler.fetchTodos('COMPLETE')">
+      완료
+    </span>
+  </div>
 </template>
 
 <script>
 import {changeStatus, createTodo, deleteTodo, fetchTodos, updateTodo} from "@/api/todo";
 import {onMounted, reactive, toRefs} from 'vue'
+import dayjs from 'dayjs'
 
 export default {
   name: 'App',
@@ -51,8 +67,8 @@ export default {
 
         state.content = ''
       },
-      fetchTodos: async () => {
-        const todos = await fetchTodos();
+      fetchTodos: async (status = '') => {
+        const todos = await fetchTodos(status);
 
         state.todos = (todos);
       },
@@ -87,6 +103,7 @@ export default {
     return {
       ...toRefs(state),
       handler,
+      dayjs,
     }
   }
 }
@@ -204,6 +221,24 @@ body {
       text-align: center;
       opacity: 0.5;
       margin: 0;
+    }
+  }
+
+  .status {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      cursor: pointer;
+      width: 100%;
+      margin: 10px;
+      text-align: center;
+      background-color: $primaryColor;
+      border: 1px solid $primaryColor;
+      color: $secondTextColor;
+      font-weight: bold;
+      outline: none;
+      border-radius: $size1;
     }
   }
 }

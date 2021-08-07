@@ -12,7 +12,7 @@ public interface TodoService {
 
     TodoResponse findTodo(Long id);
 
-    List<TodoResponse> findTodos();
+    List<TodoResponse> findTodos(String status);
 
     TodoResponse update(Long id, TodoUpdateRequest todoUpdateRequest);
 

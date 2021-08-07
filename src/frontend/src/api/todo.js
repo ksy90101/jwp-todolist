@@ -13,8 +13,8 @@ export const fetchTodo = async (id) => {
     return new Todo(data);
 }
 
-export const fetchTodos = async () => {
-    const {data} = await http.get('/todos')
+export const fetchTodos = async (status) => {
+    const {data} = await http.get(`/todos?status=${status}`)
 
     return data.map(response => new Todo(response))
 }
